@@ -22,7 +22,6 @@ csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS9iUTdte3K7UVyRPSeZ0
 response = requests.get(csv_url)
 csvfile = StringIO(response.text)
 reader = csv.DictReader(csvfile)
-    
     for row in reader:
     id_value = row["id"]
     image = row["image_url"]
