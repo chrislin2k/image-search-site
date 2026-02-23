@@ -22,27 +22,44 @@ csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS9iUTdte3K7UVyRPSeZ0
 response = requests.get(csv_url)
 csvfile = StringIO(response.text)
 reader = csv.DictReader(csvfile)
-    headers = next(reader)
-
+    
     for row in reader:
-        image = row[1]
-        title = row[2]
-        author = row[3]
+    id_value = row["id"]
+    image = row["image_url"]
+    title = row["title"]
+    author = row["author"]
+    slug_from_sheet = row.get("slug", "")
+    keywords = row.get("keywords", "")
+    category = row.get("category", "")
 
-        slug = slugify(title)
-        filename = f"covers/{slug}.html"
+    if not image or not title:
+        continue
 
-        with open("template.html", encoding="utf-8") as f:
-            template = f.read()
+    # Use slug from sheet if exists, otherwise auto-generate
+    if slug_from_sheet:
+        slug = slug_from_sheet
+    else:
+        slug = f"{id_value}-{slugify(title)}"
 
-        html = template.replace("{{TITLE}}", title)\
-                       .replace("{{AUTHOR}}", author)\
-                       .replace("{{IMAGE}}", image)
+    filename = f"covers/{slug}.html"
 
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(html)
+    with open("template.html", encoding="utf-8") as f:
+        template = f.read()
 
-        sitemap_urls.append(f"{base_url}/covers/{slug}.html")
+    html = (
+        template
+        .replace("{{TITLE}}", title)
+        .replace("{{AUTHOR}}", author)
+        .replace("{{IMAGE}}", image)
+        .replace("{{ID}}", str(id_value))
+        .replace("{{KEYWORDS}}", keywords)
+        .replace("{{CATEGORY}}", category)
+    )
+
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    sitemap_urls.append(f"{base_url}/covers/{slug}.html")
 
 # Generate sitemap
 with open("sitemap.xml", "w", encoding="utf-8") as f:
