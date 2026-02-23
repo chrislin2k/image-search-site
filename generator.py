@@ -14,8 +14,14 @@ def slugify(text):
     text = re.sub(r"\s+", "-", text)
     return text.lower()
 
-with open("data.csv", newline="", encoding="utf-8") as csvfile:
-    reader = csv.reader(csvfile)
+import requests
+from io import StringIO
+
+csv_url = "PASTE_YOUR_GOOGLE_CSV_LINK_HERE"
+
+response = requests.get(csv_url)
+csvfile = StringIO(response.text)
+reader = csv.DictReader(csvfile)
     headers = next(reader)
 
     for row in reader:
