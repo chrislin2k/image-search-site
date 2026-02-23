@@ -17,7 +17,7 @@ def slugify(text):
 import requests
 from io import StringIO
 
-csv_url = "PASTE_YOUR_GOOGLE_CSV_LINK_HERE"
+csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS9iUTdte3K7UVyRPSeZ0euorASk4mo00oCJOjK8ZyGVUxD1uXJrt5oxVrU_0fu_-DjPjKAdRqc8YkM/pub?gid=388996334&single=true&output=csv"
 
 response = requests.get(csv_url)
 csvfile = StringIO(response.text)
