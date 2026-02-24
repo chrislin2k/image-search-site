@@ -39,7 +39,7 @@ for row in reader:
     if slug_from_sheet:
         slug = slug_from_sheet
     else:
-        slug = f"{id_value}-{slugify(title)}"
+       slug = f"{id_value}"
 
     filename = f"covers/{slug}.html"
 
