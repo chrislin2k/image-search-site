@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chrislin2k.github.io/image-search-site/sitemap.xml
